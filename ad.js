@@ -1,5 +1,5 @@
 (async () => {
-  const res = await fetch("https://ad-server.altice-net.workers.dev/ad"); // ←自分のURLに変更
+  const res = await fetch("https://ad-server.altice-net.workers.dev/ad");
   const ad = await res.json();
 
   const a = document.createElement("a");
