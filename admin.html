@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ad Server Admin</title>
+  <title>Ad Server Admin (GitHub Raw版)</title>
 
   <style>
     body {
       font-family: sans-serif;
-      background: #f5f6fa;
+      background: #0f172a;
+      color: #e2e8f0;
       margin: 0;
       padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
     }
 
     .container {
@@ -22,40 +19,53 @@
       margin: auto;
     }
 
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
     .card {
-      background: white;
-      padding: 15px;
-      margin: 10px 0;
+      background: #111827;
+      padding: 16px;
+      margin: 12px 0;
       border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     input {
       width: 100%;
       padding: 10px;
-      margin: 5px 0;
+      margin: 6px 0;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #334155;
+      background: #0b1220;
+      color: white;
     }
 
     button {
-      padding: 10px 15px;
+      padding: 10px 14px;
       border: none;
       border-radius: 8px;
-      background: #4f46e5;
+      background: #6366f1;
       color: white;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     button:hover {
-      background: #4338ca;
+      background: #4f46e5;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .ad {
+      background: #0b1220;
+      padding: 10px;
+      border-radius: 10px;
     }
 
     img {
@@ -63,24 +73,37 @@
       border-radius: 8px;
     }
 
-    .views {
+    .small {
       font-size: 12px;
-      color: gray;
+      color: #94a3b8;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #60a5fa;
+      margin-top: 4px;
     }
   </style>
 </head>
-
 <body>
 
 <div class="container">
 
-  <h1>広告管理パネル</h1>
+  <h1>広告管理パネル（GitHub Raw対応）</h1>
 
   <div class="card">
     <h3>広告追加</h3>
-    <input id="image" placeholder="画像URL">
-    <input id="url" placeholder="リンクURL">
-    <button onclick="addAd()">追加</button>
+
+    <div class="hint">
+      画像はGitHub Raw URLを使用してください：<br>
+      https://raw.githubusercontent.com/ユーザー名/リポジトリ/main/images/xxx.png
+    </div>
+
+    <input id="image" placeholder="GitHub Raw 画像URL" />
+    <input id="url" placeholder="リンクURL（例：https://example.com）" />
+
+    <button onclick="fillExample()">例を入力</button>
+    <button onclick="addAd()">広告追加</button>
   </div>
 
   <div class="card">
@@ -94,14 +117,20 @@
 <script>
 const API = "https://ad-server.altice-net.workers.dev";
 
+function fillExample() {
+  document.getElementById("image").value =
+    "https://raw.githubusercontent.com/Altice-kun/Altice-AD/main/images/ad1.png";
+  document.getElementById("url").value = "https://example.com";
+}
+
 async function addAd() {
   const image = document.getElementById("image").value;
   const url = document.getElementById("url").value;
 
   const res = await fetch(API + "/add", {
     method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({image, url})
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image, url })
   });
 
   alert(await res.text());
@@ -117,11 +146,11 @@ async function loadAds() {
 
   data.forEach(ad => {
     const div = document.createElement("div");
-    div.className = "card";
+    div.className = "ad";
 
     div.innerHTML = `
       <img src="${ad.image}" />
-      <div class="views">views: ${ad.views}</div>
+      <div class="small">views: ${ad.views}</div>
       <a href="${ad.url}" target="_blank">open</a>
     `;
 
