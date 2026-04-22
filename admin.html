@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ad Server Admin (GitHub Raw版)</title>
+  <title>Ad Server Admin</title>
 
   <style>
     body {
+      margin: 0;
       font-family: sans-serif;
       background: #0f172a;
       color: #e2e8f0;
-      margin: 0;
-      padding: 20px;
     }
 
     .container {
       max-width: 900px;
       margin: auto;
+      padding: 20px;
     }
 
     h1 {
@@ -27,15 +27,14 @@
     .card {
       background: #111827;
       padding: 16px;
-      margin: 12px 0;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      margin-bottom: 16px;
     }
 
     input {
       width: 100%;
       padding: 10px;
-      margin: 6px 0;
+      margin-top: 8px;
       border-radius: 8px;
       border: 1px solid #334155;
       background: #0b1220;
@@ -43,13 +42,13 @@
     }
 
     button {
+      margin-top: 10px;
       padding: 10px 14px;
-      border: none;
+      border: 0;
       border-radius: 8px;
       background: #6366f1;
       color: white;
       cursor: pointer;
-      margin-top: 8px;
     }
 
     button:hover {
@@ -64,24 +63,29 @@
 
     .ad {
       background: #0b1220;
-      padding: 10px;
       border-radius: 10px;
+      overflow: hidden;
+      padding-bottom: 10px;
+      cursor: pointer;
     }
 
-    img {
+    .ad img {
       width: 100%;
-      border-radius: 8px;
+      display: block;
     }
 
-    .small {
+    .meta {
       font-size: 12px;
+      padding: 6px 10px;
       color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
     }
 
-    .hint {
-      font-size: 12px;
+    .label {
+      font-size: 10px;
+      padding: 0 10px;
       color: #60a5fa;
-      margin-top: 4px;
     }
   </style>
 </head>
@@ -89,21 +93,15 @@
 
 <div class="container">
 
-  <h1>広告管理パネル（GitHub Raw対応）</h1>
+  <h1>広告管理画面</h1>
 
   <div class="card">
-    <h3>広告追加</h3>
+    <h3>広告追加（GitHub Raw自動化）</h3>
 
-    <div class="hint">
-      画像はGitHub Raw URLを使用してください：<br>
-      https://raw.githubusercontent.com/ユーザー名/リポジトリ/main/images/xxx.png
-    </div>
+    <input type="file" id="file" />
+    <input type="text" id="url" placeholder="広告リンクURL" />
 
-    <input id="image" placeholder="GitHub Raw 画像URL" />
-    <input id="url" placeholder="リンクURL（例：https://example.com）" />
-
-    <button onclick="fillExample()">例を入力</button>
-    <button onclick="addAd()">広告追加</button>
+    <button onclick="uploadAd()">広告登録</button>
   </div>
 
   <div class="card">
@@ -117,41 +115,58 @@
 <script>
 const API = "https://ad-server.altice-net.workers.dev";
 
-function fillExample() {
-  document.getElementById("image").value =
-    "https://raw.githubusercontent.com/Altice-kun/Altice-AD/main/images/ad1.png";
-  document.getElementById("url").value = "https://example.com";
-}
-
-async function addAd() {
-  const image = document.getElementById("image").value;
+async function uploadAd() {
+  const file = document.getElementById("file").files[0];
   const url = document.getElementById("url").value;
 
-  const res = await fetch(API + "/add", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ image, url })
-  });
+  if (!file || !url) {
+    alert("画像とURLを入力してください");
+    return;
+  }
 
-  alert(await res.text());
-  loadAds();
+  const reader = new FileReader();
+
+  reader.onload = async () => {
+    const base64 = reader.result.split(",")[1];
+
+    const res = await fetch(API + "/upload-ad", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        image: base64,
+        url: url
+      })
+    });
+
+    alert(await res.text());
+    loadAds();
+  };
+
+  reader.readAsDataURL(file);
 }
 
 async function loadAds() {
   const res = await fetch(API + "/list");
-  const data = await res.json();
+  const ads = await res.json();
 
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  data.forEach(ad => {
+  ads.forEach(ad => {
+    const ctr = ad.views > 0 ? ((ad.clicks / ad.views) * 100).toFixed(2) : 0;
+
     const div = document.createElement("div");
     div.className = "ad";
 
     div.innerHTML = `
       <img src="${ad.image}" />
-      <div class="small">views: ${ad.views}</div>
-      <a href="${ad.url}" target="_blank">open</a>
+      <div class="meta">
+        <span>views: ${ad.views}</span>
+        <span>CTR: ${ctr}%</span>
+      </div>
+      <div class="label">Sponsored</div>
     `;
 
     list.appendChild(div);
