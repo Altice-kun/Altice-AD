@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ad Viewer</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #0f172a;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .ad-card {
+      width: 360px;
+      background: #111827;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: 0.3s;
+      animation: fade 0.4s ease;
+    }
+
+    .ad-card:hover {
+      transform: scale(1.02);
+    }
+
+    .ad-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .label {
+      font-size: 10px;
+      padding: 0 10px 10px;
+      color: #60a5fa;
+      text-align: right;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="ad"></div>
+
+<script>
+const API = "https://ad-server.altice-net.workers.dev";
+
+let currentAd = null;
+
+async function loadAd() {
+  const res = await fetch(API + "/ad");
+  currentAd = await res.json();
+
+  const ctr = currentAd.ctr ? (currentAd.ctr * 100).toFixed(2) : 0;
+
+  document.getElementById("ad").innerHTML = `
+    <div class="ad-card" onclick="clickAd()">
+      <img src="${currentAd.image}" />
+      <div class="meta">
+        <span>views: ${currentAd.views}</span>
+        <span>CTR: ${ctr}%</span>
+      </div>
+      <div class="label">Sponsored</div>
+    </div>
+  `;
+}
+
+function clickAd() {
+  if (!currentAd) return;
+
+  fetch(API + "/click?id=" + currentAd.id);
+  window.open(currentAd.url, "_blank");
+}
+
+// 初期ロード
+loadAd();
+
+// 10秒ごとに更新（広告ローテーション）
+setInterval(loadAd, 10000);
+</script>
+
+</body>
+</html>
