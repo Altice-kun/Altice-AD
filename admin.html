@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ad Server Admin</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input { margin: 5px; padding: 5px; width: 300px; }
+    button { padding: 6px 10px; margin: 5px; }
+    .card { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+    img { max-width: 200px; display: block; }
+  </style>
+</head>
+<body>
+
+<h1>Ad Server 管理画面</h1>
+
+<h2>広告追加</h2>
+<input id="image" placeholder="画像URL" /> <br/>
+<input id="url" placeholder="リンクURL" /> <br/>
+<button onclick="addAd()">追加</button>
+
+<h2>広告一覧</h2>
+<button onclick="loadAds()">更新</button>
+<div id="list"></div>
+
+<script>
+const API = "https://ad-server.altice-net.workers.dev";
+
+async function addAd() {
+  const image = document.getElementById("image").value;
+  const url = document.getElementById("url").value;
+
+  const res = await fetch(API + "/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image, url })
+  });
+
+  alert(await res.text());
+  loadAds();
+}
+
+async function loadAds() {
+  const res = await fetch(API + "/list");
+  const data = await res.json();
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  data.forEach(ad => {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <img src="${ad.image}" />
+      <p>${ad.url}</p>
+      <p>views: ${ad.views}</p>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+loadAds();
+</script>
+
+</body>
+</html>
