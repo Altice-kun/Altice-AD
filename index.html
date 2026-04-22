@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Altice Ads 管理</title>
+</head>
+<body>
+
+<h1>広告登録</h1>
+
+<input id="image" placeholder="画像URL"><br><br>
+<input id="url" placeholder="リンクURL"><br><br>
+
+<button onclick="addAd()">登録</button>
+
+<h2>広告一覧</h2>
+<ul id="list"></ul>
+
+<script>
+const API = "https://xxxxx.workers.dev"; // ←自分のURL
+
+async function addAd() {
+  const image = document.getElementById("image").value;
+  const url = document.getElementById("url").value;
+
+  await fetch(API + "/add", {
+    method: "POST",
+    body: JSON.stringify({ image, url })
+  });
+
+  loadAds();
+}
+
+async function loadAds() {
+  const res = await fetch(API + "/list");
+  const ads = await res.json();
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  ads.forEach(ad => {
+    const li = document.createElement("li");
+    li.innerHTML = `<img src="${ad.image}" width="200"> <a href="${ad.url}">${ad.url}</a>`;
+    list.appendChild(li);
+  });
+}
+
+loadAds();
+</script>
+
+</body>
+</html>
