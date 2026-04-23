@@ -10,6 +10,7 @@
 .card {
   width: 300px;
   background: #082b3b;
+  color: #c1e7f7;
   border-radius: 8px;
   overflow: hidden;
   transition: 0.3s;
