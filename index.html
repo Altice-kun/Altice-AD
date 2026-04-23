@@ -9,6 +9,7 @@
       font-family: sans-serif;
       background: #0f172a;
       color: #e2e8f0;
+      text-align: center;
     }
 
     button {
@@ -74,24 +75,64 @@
            color: white;
            border-radius: 10px;}
 
+      /* 全体の枠 */
+  .ticker-wrap {
+    width: 100%;
+    overflow: hidden; /* はみ出た文字を隠す */
+    background: #000;
+    color: #0f0; /* 電光掲示板風の緑 */
+    padding: 10px 0;
+    font-family: monospace;
+  }
+
+  /* 流れる中身のコンテナ */
+  .ticker {
+    display: flex;
+    white-space: nowrap;
+    width: max-content; /* 中身の幅に合わせる */
+    animation: scroll 20s linear infinite; /* 20秒でループ */
+  }
+
+  /* 各銘柄のスタイル */
+  .ticker-item {
+    padding: 0 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  /* アニメーションの設定 */
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* 半分まで行ったらループ */
+  }
   </style>
 </head>
 <body>
 
-<h1>広告登録</h1>
+<h1>Altice-AD</h1>
+<p></p>
 
-<input id="image" placeholder="画像URL"><br><br>
-<input id="url" placeholder="リンクURL"><br><br>
-
-<button onclick="addAd()">登録</button>
-
-<h2>広告一覧</h2>
-<ul id="list"></ul>
-
+<div class="ticker-wrap">
+  <div class="ticker">
+    <!-- 同じ内容を2回繰り返すことで継ぎ目をなくす -->
+    <div class="ticker-item">500表示まで無料</div>
+    <div class="ticker-item">速攻登録、即時公開</div>
+    <div class="ticker-item">登録最短１分以内</div>
+    <div class="ticker-item">ログイン情報以外の登録不必要</div>
+    
+    <!-- ループを滑らかにするため複製 -->
+    <!-- 同じ内容を2回繰り返すことで継ぎ目をなくす -->
+    <div class="ticker-item">500表示まで無料</div>
+    <div class="ticker-item">速攻登録、即時公開</div>
+    <div class="ticker-item">登録最短１分以内</div>
+    <div class="ticker-item">ログイン情報以外の登録不必要</div>
+  </div>
+</div>
+  
 <script>
 const API = "https://xxxxx.workers.dev"; // ←自分のURL
 
-async function addAd() {
+function addAd() {
   const image = document.getElementById("image").value;
   const url = document.getElementById("url").value;
 
