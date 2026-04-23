@@ -125,9 +125,13 @@
 <script>
 const API = "https://xxxxx.workers.dev"; // ←自分のURL
 
-    const tickerContainer = document.getElementById('js-ticker-copy');
-    // 中身を2倍にして無限ループを完成させる
-    tickerContainer.innerHTML += tickerContainer.innerHTML;
+  // ページが完全に読み込まれてから実行する設定
+  window.addEventListener('load', function() {
+    const target = document.getElementById('myTicker');
+    if (target) {
+      target.innerHTML += target.innerHTML; // 中身を2倍にして無限ループ
+    }
+  });
   
 function addAd() {
   const image = document.getElementById("image").value;
