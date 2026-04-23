@@ -9,19 +9,22 @@
 
 .card {
   width: 300px;
-  background: #fff;
+  background: #082b3b;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   overflow: hidden;
   transition: 0.3s;
   display: flex;       /* 横並びにする */
   flex-wrap: wrap;    /* 幅が足りない時に自動で折り返す */
   gap: 20px;          /* カード同士の隙間 */
   justify-content: center; /* 中央寄せにする場合 */
+  border: 1px solid rgba(37, 99, 235, 0.3); /* 青い細い枠線を入れるとより光って見えます */
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); /* 青いグロー効果 */
 }
 
 .card:hover {
   transform: translateY(-5px); /* ホバー時に少し上に移動 */
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.8), 0 0 10px rgba(37, 99, 235, 0.4);
+  border: 1px solid rgba(37, 99, 235, 1);
 }
 
 .card-img {
