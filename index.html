@@ -10,6 +10,65 @@
       background: #0f172a;
       color: #e2e8f0;
     }
+
+    button {
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      animation: buttonhover 0.4s;
+      background: #3d79fc;
+      font-size: 1.3em;
+      padding: 13px 23px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+    }
+
+    button:hover:disabled {
+      animation: unbuttonhover 0.4s
+      font-size: 1.2em;
+      padding: 10px 20px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    @keyframes buttonhover {
+      0% { font-size: 1.2em;
+           padding: 10px 20px;
+           border: none;
+           background: #2563eb;
+           color: white;
+           border-radius: 10px;}
+
+      100%{background: #3d79fc;
+           font-size: 1.3em;
+           padding: 13px 23px;
+           border: none;
+           border-radius: 13px;
+           cursor: pointer;}
+    }
+
+    @keyframes unbuttonhover {
+           0%{background: #3d79fc;
+           font-size: 1.3em;
+           padding: 13px 23px;
+           border: none;
+           border-radius: 13px;
+           cursor: pointer;}
+           
+           100% { font-size: 1.2em;
+           padding: 10px 20px;
+           border: none;
+           background: #2563eb;
+           color: white;
+           border-radius: 10px;}
+
   </style>
 </head>
 <body>
