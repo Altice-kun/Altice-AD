@@ -75,36 +75,37 @@
            color: white;
            border-radius: 10px;}
 
-      /* 全体の枠 */
-  .ticker-wrap {
-    width: 100%;
-    overflow: hidden; /* はみ出た文字を隠す */
-    background: #000;
-    color: #0f0; /* 電光掲示板風の緑 */
-    padding: 10px 0;
-    font-family: monospace;
-  }
+        /* 外枠 */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: #000; /* 黒背景 */
+            padding: 12px 0;
+        }
 
-  /* 流れる中身のコンテナ */
-  .ticker {
-    display: flex;
-    white-space: nowrap;
-    width: max-content; /* 中身の幅に合わせる */
-    animation: scroll 20s linear infinite; /* 20秒でループ */
-  }
+        /* 流れる中身 */
+        .ticker-content {
+            display: flex;
+            width: max-content;
+            animation: scroll-left 15s linear infinite; /* 15秒で一周 */
+        }
 
-  /* 各銘柄のスタイル */
-  .ticker-item {
-    padding: 0 2rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
+        /* テキストのスタイル */
+        .msg {
+            color: #00ff00; /* 電光掲示板っぽい緑 */
+            font-family: sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            white-space: nowrap;
+            padding-right: 50px; /* 文言のあとのスキマ */
+        }
 
-  /* アニメーションの設定 */
-  @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* 半分まで行ったらループ */
-  }
+        /* ループ用のアニメーション */
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    
   </style>
 </head>
 <body>
@@ -132,10 +133,9 @@
 <script>
 const API = "https://xxxxx.workers.dev"; // ←自分のURL
 
-// 静的ページでも、これだけの短いコードで「無限ループの継ぎ目」を自動作成できます
-    const ticker = document.getElementById('js-ticker');
-    // 中身をコピーして後ろに結合（これでループが途切れない）
-    ticker.innerHTML += ticker.innerHTML;
+    // 自動で内容を2倍にして無限ループを繋げます
+    const content = document.getElementById('loop-text');
+    content.innerHTML += content.innerHTML;
   
 function addAd() {
   const image = document.getElementById("image").value;
