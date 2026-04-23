@@ -76,37 +76,32 @@
            border-radius: 10px;}
         }
 
-        .fade-text-container {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #333;
-            position: relative;
-        }
+.card {
+  width: 300px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: 0.3s;
+  display: flex;       /* 横並びにする */
+  flex-wrap: wrap;    /* 幅が足りない時に自動で折り返す */
+  gap: 20px;          /* カード同士の隙間 */
+  justify-content: center; /* 中央寄せにする場合 */
+}
 
-        /* アニメーションの設定 */
-        .fade-text {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            opacity: 0;
-            animation: fadeLoop 9s infinite; /* 3秒×3単語 = 9秒 */
-        }
+.card:hover {
+  transform: translateY(-5px); /* ホバー時に少し上に移動 */
+}
 
-        /* 各単語の開始タイミングをずらす */
-        .fade-text:nth-child(1) { animation-delay: 0s; }
-        .fade-text:nth-child(2) { animation-delay: 3s; }
-        .fade-text:nth-child(3) { animation-delay: 6s; }
-        .fade-text:nth-child(3) { animation-delay: 9s; }
+.card-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
-        @keyframes fadeLoop {
-            0% { opacity: 0; }
-            10% { opacity: 1; }  /* 表示 */
-            30% { opacity: 1; }  /* 維持 */
-            40% { opacity: 0; }  /* 消える */
-            100% { opacity: 0; }
-        }
+.card-content {
+  padding: 1rem;
+}
 
     
   </style>
@@ -116,13 +111,30 @@
 <h1>Altice-AD</h1>
 <p></p>
 
-<div class="fade-text-container">
-    <div class="ticker-flow" id="js-ticker-copy">
-        <span class="fade-text">500表示まで無料</span>
-        <span class="fade-text">速攻登録、即時公開</span>
-        <span class="fade-text">登録最短１分以内</span>
-        <span class="fade-text">ログイン情報以外の登録不必要</span>
-    </div>
+<div class="card">
+  <div class="card-content">
+    <h2 class="card-title">登録最短1分以内</h2>
+    <p class="card-description">ユーザー名、氏名、メールアドレス、パスワードで登録するだけ!!</p>
+  </div>
+</div>
+<div class="card">
+  <div class="card-content">
+    <h2 class="card-title">500表示まで無料</h2>
+    <p class="card-description">Altice-ADでは、各広告登録契約につき500表示まで無料です!!</p>
+  </div>
+</div>
+<div class="card">
+  <div class="card-content">
+    <h2 class="card-title">安心安全の超セキュリティ</h2>
+    <p class="card-description">独自のセキュリティとCloudflare Workerによるバックエンドによる高セキュリティ!!</p>
+  </div>
+</div>
+<p></p>
+<div class="card">
+  <div class="card-content">
+    <h2 class="card-title">表示API無料</h2>
+    <p class="card-description">ページ等への広告表示APIは、いつでも無料!!</p>
+  </div>
 </div>
   
 <script>
