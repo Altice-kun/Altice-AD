@@ -132,6 +132,11 @@
 <script>
 const API = "https://xxxxx.workers.dev"; // ←自分のURL
 
+// 静的ページでも、これだけの短いコードで「無限ループの継ぎ目」を自動作成できます
+    const ticker = document.getElementById('js-ticker');
+    // 中身をコピーして後ろに結合（これでループが途切れない）
+    ticker.innerHTML += ticker.innerHTML;
+  
 function addAd() {
   const image = document.getElementById("image").value;
   const url = document.getElementById("url").value;
