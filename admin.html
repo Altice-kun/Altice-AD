@@ -1,179 +1,178 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ad Server Admin</title>
+  <meta charset="UTF-8">
+  <title>Ad Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
-      margin: 0;
       font-family: sans-serif;
       background: #0f172a;
-      color: #e2e8f0;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
+      color: white;
+      margin: 0;
       padding: 20px;
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .card {
+    .box {
+      max-width: 500px;
+      margin: auto;
       background: #111827;
-      padding: 16px;
+      padding: 20px;
       border-radius: 12px;
-      margin-bottom: 16px;
     }
 
-    input {
+    input, button {
       width: 100%;
+      margin-top: 10px;
       padding: 10px;
-      margin-top: 8px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background: #0b1220;
-      color: white;
+      border-radius: 6px;
+      border: none;
     }
 
     button {
-      margin-top: 10px;
-      padding: 10px 14px;
-      border: 0;
-      border-radius: 8px;
-      background: #6366f1;
+      background: #2563eb;
       color: white;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #4f46e5;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
     .ad {
-      background: #0b1220;
-      border-radius: 10px;
-      overflow: hidden;
-      padding-bottom: 10px;
-      cursor: pointer;
+      margin-top: 15px;
+      padding: 10px;
+      background: #1f2937;
+      border-radius: 8px;
     }
 
-    .ad img {
+    img {
       width: 100%;
-      display: block;
-    }
-
-    .meta {
-      font-size: 12px;
-      padding: 6px 10px;
-      color: #94a3b8;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .label {
-      font-size: 10px;
-      padding: 0 10px;
-      color: #60a5fa;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
+<div class="box" id="loginBox">
+  <h2>ログイン</h2>
+  <input id="email" placeholder="メールアドレス">
+  <button onclick="login()">ログイン</button>
+</div>
 
-  <h1>広告管理画面</h1>
+<div class="box" id="adminBox" style="display:none;">
+  <h2>広告管理</h2>
 
-  <div class="card">
-    <h3>広告追加（GitHub Raw自動化）</h3>
+  <input type="file" id="imageFile">
+  <input id="url" placeholder="リンクURL">
+  <button onclick="uploadAd()">広告追加</button>
 
-    <input type="file" id="file" />
-    <input type="text" id="url" placeholder="広告リンクURL" />
-
-    <button onclick="uploadAd()">広告登録</button>
-  </div>
-
-  <div class="card">
-    <h3>広告一覧</h3>
-    <button onclick="loadAds()">更新</button>
-    <div id="list" class="grid"></div>
-  </div>
-
+  <h3>広告一覧</h3>
+  <div id="list"></div>
 </div>
 
 <script>
 const API = "https://ad-server.altice-net.workers.dev";
 
+// =====================
+// ログイン
+// =====================
+async function login() {
+  const email = document.getElementById("email").value;
+
+  const res = await fetch(API + "/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ email })
+  });
+
+  if (res.ok) {
+    init();
+  } else {
+    alert("ログイン失敗");
+  }
+}
+
+// =====================
+// セッション確認
+// =====================
+async function init() {
+  const res = await fetch(API + "/me", {
+    credentials: "include"
+  });
+
+  if (res.ok) {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("adminBox").style.display = "block";
+    loadAds();
+  }
+}
+
+// =====================
+// 広告一覧
+// =====================
+async function loadAds() {
+  const res = await fetch(API + "/list", {
+    credentials: "include"
+  });
+
+  const data = await res.json();
+
+  const el = document.getElementById("list");
+  el.innerHTML = "";
+
+  data.forEach(ad => {
+    const ctr = ad.views > 0 ? (ad.clicks / ad.views * 100).toFixed(2) : 0;
+
+    el.innerHTML += `
+      <div class="ad">
+        <img src="${ad.image}">
+        <div>URL: ${ad.url}</div>
+        <div>Views: ${ad.views}</div>
+        <div>Clicks: ${ad.clicks}</div>
+        <div>CTR: ${ctr}%</div>
+      </div>
+    `;
+  });
+}
+
+// =====================
+// 画像アップロード
+// =====================
 async function uploadAd() {
-  const file = document.getElementById("file").files[0];
+  const file = document.getElementById("imageFile").files[0];
   const url = document.getElementById("url").value;
 
   if (!file || !url) {
-    alert("画像とURLを入力してください");
+    alert("入力不足");
     return;
   }
 
   const reader = new FileReader();
-
   reader.onload = async () => {
     const base64 = reader.result.split(",")[1];
 
     const res = await fetch(API + "/upload-ad", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
         image: base64,
         url: url
       })
     });
 
-    alert(await res.text());
-    loadAds();
+    if (res.ok) {
+      alert("追加成功");
+      loadAds();
+    } else {
+      alert("失敗");
+    }
   };
 
   reader.readAsDataURL(file);
 }
 
-async function loadAds() {
-  const res = await fetch(API + "/list");
-  const ads = await res.json();
-
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-
-  ads.forEach(ad => {
-    const ctr = ad.views > 0 ? ((ad.clicks / ad.views) * 100).toFixed(2) : 0;
-
-    const div = document.createElement("div");
-    div.className = "ad";
-
-    div.innerHTML = `
-      <img src="${ad.image}" />
-      <div class="meta">
-        <span>views: ${ad.views}</span>
-        <span>CTR: ${ctr}%</span>
-      </div>
-      <div class="label">Sponsored</div>
-    `;
-
-    list.appendChild(div);
-  });
-}
-
-loadAds();
+// 初期チェック
+init();
 </script>
 
 </body>
