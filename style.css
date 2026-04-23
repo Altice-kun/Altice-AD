@@ -14,6 +14,22 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   overflow: hidden;
   transition: 0.3s;
-  color: #333; /* 追加：カード内の文字を読みやすくする */
-  text-align: left; /* 追加：左揃え */
+  display: flex;       /* 横並びにする */
+  flex-wrap: wrap;    /* 幅が足りない時に自動で折り返す */
+  gap: 20px;          /* カード同士の隙間 */
+  justify-content: center; /* 中央寄せにする場合 */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* ホバー時に少し上に移動 */
+}
+
+.card-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-content {
+  padding: 1rem;
 }
