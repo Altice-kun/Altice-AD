@@ -75,36 +75,36 @@
            color: white;
            border-radius: 10px;}
 
-        /* 外枠 */
-        .ticker-wrap {
-            width: 100%;
-            overflow: hidden;
-            background: #000; /* 黒背景 */
-            padding: 12px 0;
-        }
+/* 掲示板の外枠 */
+.ticker-board {
+    width: 100%;
+    overflow: hidden;
+    background: #000; /* ここだけ背景を黒にする */
+    margin: 20px 0;   /* 上下に少しスキマを作る */
+}
 
-        /* 流れる中身 */
-        .ticker-content {
-            display: flex;
-            width: max-content;
-            animation: scroll-left 15s linear infinite; /* 15秒で一周 */
-        }
+/* 流れるアニメーションの箱 */
+.ticker-flow {
+    display: flex;
+    width: max-content;
+    animation: ticker-loop 20s linear infinite;
+}
 
-        /* テキストのスタイル */
-        .msg {
-            color: #00ff00; /* 電光掲示板っぽい緑 */
-            font-family: sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            white-space: nowrap;
-            padding-right: 50px; /* 文言のあとのスキマ */
-        }
+/* 文字の見た目 */
+.ticker-text {
+    color: #00ff00;
+    font-family: monospace;
+    font-size: 24px;
+    font-weight: bold;
+    padding-right: 100px; /* 文言の間の距離 */
+    white-space: nowrap;
+}
 
-        /* ループ用のアニメーション */
-        @keyframes scroll-left {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+/* アニメーション本体 */
+@keyframes ticker-loop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
     
   </style>
 </head>
@@ -113,29 +113,21 @@
 <h1>Altice-AD</h1>
 <p></p>
 
-<div class="ticker-wrap">
-  <div class="ticker">
-    <!-- 同じ内容を2回繰り返すことで継ぎ目をなくす -->
-    <div class="ticker-item">500表示まで無料</div>
-    <div class="ticker-item">速攻登録、即時公開</div>
-    <div class="ticker-item">登録最短１分以内</div>
-    <div class="ticker-item">ログイン情報以外の登録不必要</div>
-    
-    <!-- ループを滑らかにするため複製 -->
-    <!-- 同じ内容を2回繰り返すことで継ぎ目をなくす -->
-    <div class="ticker-item">500表示まで無料</div>
-    <div class="ticker-item">速攻登録、即時公開</div>
-    <div class="ticker-item">登録最短１分以内</div>
-    <div class="ticker-item">ログイン情報以外の登録不必要</div>
-  </div>
+<div class="ticker-board">
+    <div class="ticker-flow" id="js-ticker-copy">
+        <span class="ticker-text">500表示まで無料</span>
+        <span class="ticker-text">速攻登録、即時公開</span>
+        <span class="ticker-text">登録最短１分以内</span>
+        <span class="ticker-text">ログイン情報以外の登録不必要</span>
+    </div>
 </div>
   
 <script>
 const API = "https://xxxxx.workers.dev"; // ←自分のURL
 
-    // 自動で内容を2倍にして無限ループを繋げます
-    const content = document.getElementById('loop-text');
-    content.innerHTML += content.innerHTML;
+    const tickerContainer = document.getElementById('js-ticker-copy');
+    // 中身を2倍にして無限ループを完成させる
+    tickerContainer.innerHTML += tickerContainer.innerHTML;
   
 function addAd() {
   const image = document.getElementById("image").value;
