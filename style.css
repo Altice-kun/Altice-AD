@@ -81,3 +81,34 @@ table th {
     background-color: #00544f;
     font-weight: bold;
 }
+
+footer a {
+  color: #16c493;        /* 好きな色に変更（例：濃いグレー） */
+  text-decoration: none; /* 下線を消す */
+}
+
+/* マウスを乗せた（ホバー）時の色を変える場合 */
+footer a:hover {
+  animation: ahover;
+  color: #2cf5bc;        /* ホバー時の色（例：赤） */
+  text-decoration: underline; /* ホバー時だけ下線を出す */
+}
+
+footer a:unhover {
+  animation: aunhover;
+  color: #16c493;
+  text-decoration: none;
+}
+
+@keyframes ahover {
+      0% { color: #16c493; 
+           text-decoration: none;}
+      100% { color: #2cf5bc;
+             text-decoraion: underline;}
+    }
+
+@keyframes aunhover {
+     0% { color: #2cf5bc;
+         text-decoration: underline;}
+    100% { color: #16c493;
+           text-decoration: none;}
