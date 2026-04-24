@@ -163,7 +163,21 @@
     <td>X(@tupb0120)のDMにて要相談</td>
   </tr>
 </table>
-  
+  <p></p>
+  <hr>
+  <p></p>
+  <h3>今すぐAltice-ADで広告を登録しよう！！</h3>
+  <button onclick="subscribe()">今すぐ登録</button>
+  <p></p>
+  <p></p>
+<footer>
+  <p>&copy; 2026 Altice. All rights reserved.</p>
+  <ul>
+    <li><a href="https://altice-kun.github.io/Altice-AD/privacy-policy.html/">プライバシーポリシー</a></li>
+    <li><a href="https://altice-kun.github.io/Altice-AD/contact.html/">お問い合わせ</a></li>
+  </ul>
+</footer>
+
 <script>
 const API = "https://xxxxx.workers.dev"; // ←自分のURL
 
@@ -187,7 +201,7 @@ function addAd() {
   loadAds();
 }
 
-async function loadAds() {
+function loadAds() {
   const res = await fetch(API + "/list");
   const ads = await res.json();
 
@@ -201,6 +215,10 @@ async function loadAds() {
   });
 }
 
+function subscribe() {
+  window.location.href = "https://altice-kun.github.io/Altice-AD/admin.html/";
+}
+  
 loadAds();
 </script>
 
