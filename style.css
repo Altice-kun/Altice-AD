@@ -43,3 +43,37 @@ hr {
   height: 2px;          /* 太さ */
   background-color: #ffffff; /* 色 */
 }
+
+table {
+    /* 【表自体の配置】 */
+    width: 90%;            /* 画面に対する表の幅 */
+    max-width: 800px;      /* 広がりすぎない最大幅 */
+    margin: 40px auto;     /* 上下に余白、左右autoで「表を中央」に */
+    
+    /* 【角丸のデザイン】 */
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;    /* 角丸8px */
+    border: 1px solid #ddd;
+    overflow: hidden;
+}
+
+table th, table td {
+    /* 【セル内の配置】 */
+    text-align: center;    /* 「テキストを中央」に */
+    vertical-align: middle; /* 上下方向も中央に */
+    
+    padding: 15px;         /* セル内の余白 */
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+/* 最後の列と行の線を消して角丸を綺麗に見せる */
+table th:last-child, table td:last-child { border-right: none; }
+table tr:last-child td { border-bottom: none; }
+
+/* 見出しのデザイン */
+table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
