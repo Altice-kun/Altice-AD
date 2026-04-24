@@ -121,7 +121,7 @@
   </div>
 </div>
 </div>
-
+<div id="altice-ad"></div>
   <hr>
   <h2>料金体系表</h2>
   <table border="1">
@@ -181,6 +181,7 @@
   <button onclick="location.href='https://altice-kun.github.io/Altice-AD/admin.html'">今すぐ登録</button>
   <p></p>
   <p></p>
+  <div id="altice-ad"></div>
 <footer>
   <p>&copy; 2026 Altice. All rights reserved.</p>
   <ul>
@@ -190,6 +191,16 @@
 </footer>
 
 <script>
+
+  <script>
+  fetch('https://app.base44.com/api/apps/6978552da0fe4cea6a2d35e8/entities/AdCampaign?api_key=altice_b238eeaee4130f11908ab1ff31d02b72fff9')
+    .then(r => r.json()).then(data => {
+      const ad = data.results?.[0];
+      if(ad) document.getElementById('altice-ad').innerHTML =
+        '<a href="' + ad.target_url + '" target="_blank"><img src="' + ad.image_url + '" style="max-width:100%"/></a>';
+    });
+</script>
+  
 const API = "https://ad-server.altice-net.workers.dev"; // ←自分のURL
 
   // ページが完全に読み込まれてから実行する設定
