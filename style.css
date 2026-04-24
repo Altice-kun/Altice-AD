@@ -74,6 +74,6 @@ table tr:last-child td { border-bottom: none; }
 
 /* 見出しのデザイン */
 table th {
-    background-color: #f8f9fa;
+    background-color: #00544f;
     font-weight: bold;
 }
