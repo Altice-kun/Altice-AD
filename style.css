@@ -54,7 +54,8 @@ table {
     border-collapse: separate;
     border-spacing: 0;
     border-radius: 8px;    /* 角丸8px */
-    border: 1px solid #ddd;
+    border: 1px solid rgba(221, 221, 221, 0.3); /* 青い細い枠線を入れるとより光って見えます */
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); /* 青いグロー効果 */
     overflow: hidden;
 }
 
@@ -64,6 +65,8 @@ table th, table td {
     vertical-align: middle; /* 上下方向も中央に */
     
     padding: 15px;         /* セル内の余白 */
+    border: 1px solid rgba(221, 221, 221, 0.3); /* 青い細い枠線を入れるとより光って見えます */
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); /* 青いグロー効果 */
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
 }
