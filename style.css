@@ -39,7 +39,8 @@
 }
 
 hr {
-  border: none;         /* デフォルトの線を消す */
+  border: 1px solid rgba(221, 221, 221, 0.3); /* 青い細い枠線を入れるとより光って見えます */
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); /* 青いグロー効果 */
   height: 2px;          /* 太さ */
   background-color: #ffffff; /* 色 */
 }
