@@ -89,13 +89,13 @@ footer a {
 
 /* マウスを乗せた（ホバー）時の色を変える場合 */
 footer a:hover {
-  animation: ahover;
+  animation: ahover 0.4s;
   color: #2cf5bc;        /* ホバー時の色（例：赤） */
   text-decoration: underline; /* ホバー時だけ下線を出す */
 }
 
 footer a:unhover {
-  animation: aunhover;
+  animation: aunhover 0.4s;
   color: #16c493;
   text-decoration: none;
 }
