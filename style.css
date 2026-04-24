@@ -37,3 +37,9 @@
 .card-content {
   padding: 1rem;
 }
+
+hr {
+  border: none;         /* デフォルトの線を消す */
+  height: 2px;          /* 太さ */
+  background-color: #ffffff; /* 色 */
+}
